@@ -4,17 +4,22 @@
         <el-header>系统标题</el-header>
         <el-container>
           <el-aside width="200px">左侧菜单</el-aside>
-          <el-main>地图区域</el-main>
+          <el-main>
+            <Mapview />
+          </el-main>
         </el-container>
       </el-container>
     </div>
 </template>
 
 <script>
+import Mapview from "./components/common/Mapview2D.vue"
 
 export default {
   name: 'App',
-  components: {}
+  components: {
+    Mapview
+  }
 }
 </script>
 
