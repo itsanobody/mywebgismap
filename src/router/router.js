@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from 'vue-router';
 
-import DataVisual from '../page/DataVisual.vue';
-import OneMap from '../page/OneMap.vue';
+import DataVisual from '../pages/DataVisual.vue';
+import OneMap from '../pages/OneMap.vue';
 
 Vue.use(VueRouter);
 
