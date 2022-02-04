@@ -67,16 +67,16 @@ export default {
 			// 初始化控件,清除自带控件
 			view.ui.components = [];
 			
-			//实例化basemapGallery控件
-			let basemapGallery = new BasemapGallery({
-			  view: view,
-			  // source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid")] // autocasts to LocalBasemapsSource
-			});
+			// 实例化basemapGallery控件
+			// let basemapGallery = new BasemapGallery({
+			//   view: view,
+			//   // source: [Basemap.fromId("topo-vector"), Basemap.fromId("hybrid")] // autocasts to LocalBasemapsSource
+			// });
 			
-			// Add widget to the top right corner of the view
-			view.ui.add(basemapGallery, {
-			  position: "bottom-left"
-			});
+			// // Add widget to the top right corner of the view
+			// view.ui.add(basemapGallery, {
+			//   position: "bottom-left"
+			// });
 			
 			// 实例化底图切换
 			const basemapToggle = new BasemapToggle({
@@ -84,7 +84,7 @@ export default {
 			  nextBasemap: "hybrid"  ,// Allows for toggling to the "hybrid" basemap
 			  container: 'basemap-toggle',
 			});
-			// view.ui.add(basemapToggle); //有container后，不写也可以
+			view.ui.add(basemapToggle); //有container后，不写也可以
 			
 			//实例化比例尺
 			const scaleBar = new ScaleBar({
@@ -100,7 +100,7 @@ export default {
 			});
 			// view.ui.add(zoom);
 
-			// this.$store.commit('_setDefaultMapView', view )
+			this.$store.commit('_setDefaultMapView', view );
     },
  },
 }
