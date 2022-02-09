@@ -23,76 +23,52 @@ export default {
 		return {
 			data: [
 				{
-					label: '暖色系图层',
-					layerid: 'layerid',
-					layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetWarm/MapServer',
+					label: '底图数据',
 					children: [
 						{
-							label: '二级 1-1',
-							children: [
-								{
-									label: '三级 1-1-1'
-								}
-							]
+							label: '暖色系图层',
+							layerid: 'layerid',
+							layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetWarm/MapServer'
+						},
+						{
+							label: '灰色系图层',
+							layerid: 'layerid',
+							layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer'
 						}
 					]
 				},
 				{
-					label: '一级 2',
+					label: '行政区划数据',
 					children: [
 						{
-							label: '二级 2-1',
-							children: [
-								{
-									label: '灰色系图层',
-									layerid: 'layerid',
-									layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer'
-								}
-							]
+							label: '省数据',
+							layerid: 'layerid',
+							layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer'
 						},
 						{
-							label: '行政区划数据', //这里行政区划数据url有问题，用的其他url替代的
-							children: [
-								{
-									label: '省数据',
-									layerid: 'layerid',
-									// layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer'
-									// layerurl:  'https://services3.arcgis.com/U26uBjSD32d7xvm2/ArcGIS/rest/services/%e5%85%a8%e5%9b%bd%e4%b8%bb%e8%a6%81%e5%9f%8e%e5%b8%82%e9%99%8d%e9%9b%a8/FeatureServer',
-								layerurl: 'http://localhost:8090/geoserver/gwc/demo/nurc:Pk50095?gridSet=EPSG:4326&format=image/jpeg'
-								},
-								{
-									label: '市数据',
-									layerid: 'layerid',
-									// layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer'
-									layerurl: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/ArcGIS/rest/services/chiapas/FeatureServer'
-								},
-								{
-									label: '县数据',
-									layerid: 'layerid',
-									layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer'
-								}
-							]
+							label: '市数据',
+							layerid: 'layerid',
+							layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer'
+						},
+						{
+							label: '县数据',
+							layerid: 'layerid',
+							layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer'
 						}
 					]
 				},
 				{
-					label: '一级 3',
+					label: '业务数据',
 					children: [
 						{
-							label: '二级 3-1',
-							children: [
-								{
-									label: '三级 3-1-1'
-								}
-							]
+							label: '火车站数据 84',
+							layerid: 'layerid',
+							layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/trainstationdata/FeatureServer'
 						},
 						{
-							label: '二级 3-2',
-							children: [
-								{
-									label: '三级 3-2-1'
-								}
-							]
+							label: '火车站数据 Mekatuo',
+							layerid: 'layerid',
+							layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/trainstation_WebMokatuo/FeatureServer'
 						}
 					]
 				}
@@ -115,27 +91,26 @@ export default {
 				//处理不同服务类型
 				const [TileLayer, FeatureLayer] = await loadModules(['esri/layers/TileLayer', 'esri/layers/FeatureLayer'], options);
 				const c = data.layerurl.split('/');
-				const serverType = c[c.length - 1 ];
+				const serverType = c[c.length - 1];
 				let layer = '';
 				switch (serverType) {
-					case 'MapServer' :
-					layer = new TileLayer({ url: data.layerurl, id: data.layerid});
-					break;
-					case 'FeatureServer' :
-					layer = new FeatureLayer({ url:data.layerurl, id: data.layerid});
-					break;
+					case 'MapServer':
+						layer = new TileLayer({ url: data.layerurl, id: data.layerid });
+						break;
+					case 'FeatureServer':
+						layer = new FeatureLayer({ url: data.layerurl, id: data.layerid });
+						break;
 					default:
-					break;
+						break;
 				}
 				view.map.add(layer);
-				
 			}
 		},
 		closeMapTreePannel() {
 			const currentVisible = this.$store.getters._getDefaultMapTreeVisible;
 			this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
-		},
-	},
+		}
+	}
 };
 </script>
 
