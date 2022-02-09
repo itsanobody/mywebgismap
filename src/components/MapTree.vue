@@ -1,5 +1,9 @@
 <template>
 	<div class="maptree-pannel" v-show="this.$store.getters._getDefaultMapTreeVisible">
+		<div class="maptree-header">
+			<span>图层管理</span>
+			<i class="el-icon-close" @click="closeMapTreePannel"></i>
+		</div>
 		<el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 	</div>
 </template>
@@ -19,9 +23,9 @@ export default {
 		return {
 			data: [
 				{
-					label: 'StreetGray',
+					label: '暖色系图层',
 					layerid: 'layerid',
-					layerurl: 'https://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer',
+					layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetWarm/MapServer',
 					children: [
 						{
 							label: '二级 1-1',
@@ -40,17 +44,32 @@ export default {
 							label: '二级 2-1',
 							children: [
 								{
-									label: 'CommunityENG',
+									label: '灰色系图层',
 									layerid: 'layerid',
-									layerurl: 'https://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunityENG/MapServer'
+									layerurl: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer'
 								}
 							]
 						},
 						{
-							label: '二级 2-2',
+							label: '行政区划数据', //这里行政区划数据url有问题，用的其他url替代的
 							children: [
 								{
-									label: '三级 2-2-1'
+									label: '省数据',
+									layerid: 'layerid',
+									// layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHProvince_WebMokatuo/FeatureServer'
+									// layerurl:  'https://services3.arcgis.com/U26uBjSD32d7xvm2/ArcGIS/rest/services/%e5%85%a8%e5%9b%bd%e4%b8%bb%e8%a6%81%e5%9f%8e%e5%b8%82%e9%99%8d%e9%9b%a8/FeatureServer',
+								layerurl: 'http://localhost:8090/geoserver/gwc/demo/nurc:Pk50095?gridSet=EPSG:4326&format=image/jpeg'
+								},
+								{
+									label: '市数据',
+									layerid: 'layerid',
+									// layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCity_WebMokatuo/FeatureServer'
+									layerurl: 'https://services3.arcgis.com/U26uBjSD32d7xvm2/ArcGIS/rest/services/chiapas/FeatureServer'
+								},
+								{
+									label: '县数据',
+									layerid: 'layerid',
+									layerurl: 'https://services3.arcgis.com/4MALbzcKZ6tNTFMI/arcgis/rest/services/XZQHCounty_WebMokatuo/FeatureServer'
 								}
 							]
 						}
@@ -88,21 +107,34 @@ export default {
 	methods: {
 		async handleNodeClick(data) {
 			if (data.layerurl) {
-				
+				//删除以添加的图层
 				const view = this.$store.getters._getDefaultMapView;
-				
 				const resultLayer = view.map.findLayerById('layerid');
-				
-				if(resultLayer) view.map.remove(resultLayer);
-				
-				const [TileLayer] = await loadModules(['esri/layers/TileLayer'], options);
-				
-				const layer = new TileLayer({ url: data.layerurl, id: data.layerid });
-				view.map.add(layer);
-			}
+				if (resultLayer) view.map.remove(resultLayer);
 
-			
-		}
+				//处理不同服务类型
+				const [TileLayer, FeatureLayer] = await loadModules(['esri/layers/TileLayer', 'esri/layers/FeatureLayer'], options);
+				const c = data.layerurl.split('/');
+				const serverType = c[c.length - 1 ];
+				let layer = '';
+				switch (serverType) {
+					case 'MapServer' :
+					layer = new TileLayer({ url: data.layerurl, id: data.layerid});
+					break;
+					case 'FeatureServer' :
+					layer = new FeatureLayer({ url:data.layerurl, id: data.layerid});
+					break;
+					default:
+					break;
+				}
+				view.map.add(layer);
+				
+			}
+		},
+		closeMapTreePannel() {
+			const currentVisible = this.$store.getters._getDefaultMapTreeVisible;
+			this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
+		},
 	},
 };
 </script>
@@ -115,5 +147,23 @@ export default {
 	width: 200px;
 	height: 300px;
 	background-color: #ffffff;
+}
+.maptree-header {
+	width: 100%;
+	height: 35px;
+	border-bottom: 1px solid #e4e7ed;
+	padding: 0 5px;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+}
+.maptree-header > span {
+	line-height: 35px;
+	font-size: 16px;
+	font-weight: 600;
+}
+.maptree-header > i {
+	line-height: 35px;
+	cursor: pointer;
 }
 </style>

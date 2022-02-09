@@ -34,11 +34,11 @@
 				 }
 			},
 			open() {                                     
-				let currentVisible = this.$store.getters._getDefaultMapTreeVisible;
+				const currentVisible = this.$store.getters._getDefaultMapTreeVisible;
 				this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
-			}
+			},
 		},
-	}
+	};
 </script>
 
 <style>
