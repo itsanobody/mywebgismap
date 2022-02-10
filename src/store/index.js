@@ -8,6 +8,7 @@ Vue.use(Vuex);
 const state = {
 	_defaultMapView: '', //默认地图view
 	_defaultMapTreeVisible: false, //底图目录树显示/隐藏
+	_defaultXZQHVisible: true,////行政区划面板显示/隐藏
 };
 
 const getters = {
@@ -16,6 +17,9 @@ const getters = {
 	},
 	_getDefaultMapTreeVisible() {
 		return state._defaultMapTreeVisible;
+	},
+	_getDefaultXZQHVisible() {
+		return state._defaultXZQHVisible;
 	}
 };
 
@@ -25,6 +29,9 @@ const mutations = {
 	},
 	_setDefaultMapTreeVisible(state, value) {
 		state._defaultMapTreeVisible = value;
+	},
+	_setDefaultXZQHVisible(state, value) {
+		state._defaultXZQHVisible = value;
 	}
 };
 

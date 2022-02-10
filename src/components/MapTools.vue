@@ -11,52 +11,57 @@
 </template>
 
 <script>
-	export default {
-		name: 'MapTools',
-		methods: {
-			handleMapToolsitemClick(e) {
-				console.log('handleMapToolsitemClick'+' '+e.target.id);
-				 
-				 switch(e.target.id) {
-					 case 'xzqh':
-					 break;
-					 case 'maptree':
-					 this.open();
-					 break;
-					 case 'distance':
-					 break;
-					 case 'area':
-					 break;
-					 case 'clear':
-					 break;
-					 default:
-					 break;
-				 }
-			},
-			open() {                                     
-				const currentVisible = this.$store.getters._getDefaultMapTreeVisible;
-				this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
-			},
+export default {
+	name: 'MapTools',
+	methods: {
+		handleMapToolsitemClick(e) {
+			console.log('handleMapToolsitemClick' + ' ' + e.target.id);
+
+			switch (e.target.id) {
+				case 'xzqh':
+					this.openXZQHPannel();
+					break;
+				case 'maptree':
+					this.openMapTreePannel();
+					break;
+				case 'distance':
+					break;
+				case 'area':
+					break;
+				case 'clear':
+					break;
+				default:
+					break;
+			}
 		},
-	};
+		openMapTreePannel() {
+			const currentVisible = this.$store.getters._getDefaultMapTreeVisible;
+			this.$store.commit('_setDefaultMapTreeVisible', !currentVisible);
+		},
+		openXZQHPannel() {
+			const currentVisible = this.$store.getters._getDefaultXZQHVisible;
+			this.$store.commit('_setDefaultXZQHVisible', !currentVisible);
+		}
+	}
+};
 </script>
 
 <style>
-	.maptools-view {
-		position: absolute;
-		height: 30px;
-		padding: 0 15px;
-		right: 15px;
-		top: 15px;
-		background-color: #FFFFFF;
-	}
-	.maptools-item {
-		line-height: 30px;
-		margin-left: 15px;
-		color: #32373E;
-		cursor: pointer;
-	}
-	.maptools-item:first-child {
-		margin-left: 0;
-	}
+.maptools-view {
+	position: absolute;
+	height: 30px;
+	padding: 0 15px;
+	right: 15px;
+	top: 15px;
+	background-color: #ffffff;
+}
+.maptools-item {
+	line-height: 30px;
+	margin-left: 15px;
+	color: #32373e;
+	cursor: pointer;
+}
+.maptools-item:first-child {
+	margin-left: 0;
+}
 </style>
