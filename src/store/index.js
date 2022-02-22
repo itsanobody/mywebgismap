@@ -8,7 +8,7 @@ Vue.use(Vuex);
 const state = {
 	_defaultMapView: '', //默认地图view
 	_defaultMapTreeVisible: false, //底图目录树显示/隐藏
-	_defaultXZQHVisible: true,////行政区划面板显示/隐藏
+	_defaultXZQHVisible: false,////行政区划面板显示/隐藏
 };
 
 const getters = {
